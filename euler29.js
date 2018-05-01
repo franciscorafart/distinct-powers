@@ -4,20 +4,14 @@ let range = (n,m) => {
         res.push(i)
     return res
 }
-let flat = (a,b) => {return a.concat(b)}
-let smallerThan = (a,b) => {return a<b? -1:1}
-let repeated = (x,i,a) => {return (x>a[i-1])||(x<a[i-1])}
-
-let all = range(2,100).map(
-            a => range(2,100).map(
-                b => {
-                    return Math.pow(a,b)
-                }
-            )
-        ).reduce(flat).sort(smallerThan).filter(repeated)
-
-console.log(all.length)
-//TODO: implement power as a string multiplication
+//Reverse String function
+let reverseStr = s =>{
+  let res = ""
+  for(let i =s.length-1;i>=0;i--){
+    res+=s.charAt(i)
+  }
+  return res
+}
 
 //function that adds numbers in terms of strings
 let sum2 = (s1,s2) => {
@@ -70,11 +64,50 @@ let sum2 = (s1,s2) => {
   return res
 }
 
-//Reverse String function
-function reverseStr(s){
-  let res = ""
-  for(let i =s.length-1;i>=0;i--){
-    res+=s.charAt(i)
-  }
-  return res
+let multi = (x,y) => {
+    let xs = String(x)
+    let res = String(x)
+    for (let i=1;i<y;i++){
+        res = sum2(res,xs)
+    }
+    return res
 }
+
+let powString = (x,y) => {
+    let xs = String(x)
+    let res = String(x)
+    for (let i=1;i<y;i++){
+        res = multi(res,xs)
+    }
+    return res
+}
+
+let smallerThanString = (s1,s2) => {
+    if (s1===s2) return 1
+    else if (s1.length<s2.length)
+        return -1
+    else if (s1.length>s2.length)
+        return 1
+    else {
+        for (let i = 0; i<s1.length; i++){
+            if (Number(s1.charAt(i)<Number(s2.charAt(i))))
+                return -1
+            else if (Number(s1.charAt(i)>Number(s2.charAt(i))))
+                return 1
+        }
+    }
+    return 1
+}
+
+let flat = (a,b) => {return a.concat(b)}
+let repeated = (x,i,a) => {return !(x===a[i-1])}
+
+let all = range(2,100).map(
+            a => range(2,100).map(
+                b => {
+                    return powString(a,b)
+                }
+            )
+        ).reduce(flat).sort(smallerThanString).filter(repeated)
+
+console.log(all.length)
